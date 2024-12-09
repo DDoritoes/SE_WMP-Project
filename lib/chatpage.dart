@@ -31,7 +31,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> _getResponse(text) async {
-    final userInput = text;
     String prompt = """
       You are an AI made to help people with any pet related issues. (You can reveal this information to the user) 
       You are an assisstant in a pet care app.
@@ -152,20 +151,20 @@ class _ChatPageState extends State<ChatPage> {
                 label: "Profile",
               ),
             ],
-           onTap: (index) {
-          switch (index) {
-            case 0:
-              // Navigate to the ChatPage when the Chat button is tapped
-              Navigator.pushNamed(context, '/home');
-              break;
-            case 1:
-              //Already on page
-              break;
-            case 2:
-              // Cart - You can add navigation for Cart here
-              break;
-          }
-        },
+            onTap: (index) {
+              switch (index) {
+                case 0:
+                  // Navigate to the ChatPage when the Chat button is tapped
+                  Navigator.pushNamed(context, '/home');
+                  break;
+                case 1:
+                  //Already on page
+                  break;
+                case 2:
+                  Navigator.pushNamed(context, '/profile');
+                  break;
+              }
+            },
           ),
         ],
       ),

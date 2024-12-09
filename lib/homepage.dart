@@ -29,7 +29,8 @@ class HomePage extends StatelessWidget {
             ),
           ),
           // Horizontal Scrollable ListView for stores
-          SizedBox(
+          // ignore: sized_box_for_whitespace
+          Container(
             height: 200, // Set a fixed height for the horizontal scrollable area
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -41,6 +42,7 @@ class HomePage extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       // Handle store tap, e.g., navigate to store details page
+                      // ignore: avoid_print
                       print('Tapped on ${store['name']}');
                     },
                     child: Card(
@@ -112,7 +114,7 @@ class HomePage extends StatelessWidget {
               Navigator.pushNamed(context, '/chat');
               break;
             case 2:
-              // Cart - You can add navigation for Cart here
+              Navigator.pushNamed(context, '/profile');
               break;
           }
         },

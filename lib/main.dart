@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pet_care/geminiexample.dart';
 import 'homepage.dart';
 import 'chatpage.dart';
+import 'profilepage.dart';
 import 'dart:async';
 
 void main() {
@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home': (context) => HomePage(),
         '/chat': (context) => const ChatPage(),
+        '/profile' : (context) => ProfilePage(),
       },
     );
   }
