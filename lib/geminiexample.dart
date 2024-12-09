@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'geminiapi.dart';
 
-class LoginPage extends StatefulWidget{
+class GeminiEx extends StatefulWidget{
   final String title;
-  const LoginPage({super.key, required this.title});
+  const GeminiEx({super.key, required this.title});
 
   @override
-  State<LoginPage> createState() => _MyLoginPageState();
+  State<GeminiEx> createState() => _GeminiExState();
 }
 
-class _MyLoginPageState extends State<LoginPage> {
-  final GeminiAPI pythonApi = GeminiAPI(); // Replace with your server's base URL
+class _GeminiExState extends State<GeminiEx> {
+  final GeminiAPI pythonApi = GeminiAPI();
   final TextEditingController _textFieldController = TextEditingController();
   final TextEditingController _inputController = TextEditingController();
 

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class GeminiAPI{
   static const String API_KEY = "AIzaSyAQjhFCtyQcx9qJMCNMHyZatrHXnKPIfXk";
   static const String API_URL = "https://generativeai.googleapis.com/v1alpha3/models/gemini-1.5-flash:generate";
-  static const String BASE_URL = "http://localhost:5000";
+  static const String BASE_URL = "http://10.0.2.2:5000";
 
   Future<String> callFunction(String param) async {
     final url = Uri.parse('$BASE_URL/call_function');
