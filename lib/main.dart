@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'loginpage.dart';
 import 'homepage.dart';
 import 'chatpage.dart';
 import 'profilepage.dart';
 import 'dart:async';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -79,7 +83,7 @@ class _OpeningScreen extends State<MyHomePage> {
 
   route(){
     Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (context) => HomePage()
+        builder: (context) => LoginPage()
       )
     ); 
   }
