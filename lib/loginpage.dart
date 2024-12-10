@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'homepage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
+      _saveUserCred();
       await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
@@ -40,6 +42,20 @@ class _LoginPageState extends State<LoginPage> {
         _errorMessage = e.message ?? 'An unknown error occurred';
       });
     }
+  }
+
+  Future<void> _loadUserCred() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _emailController.text = prefs.getString('username') ?? '';
+      _passwordController.text = prefs.getString('pass') ?? '';
+    });
+  }
+
+  Future<void> _saveUserCred() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('email', _emailController.text);
+    prefs.setString('pass', _passwordController.text);
   }
 
   @override
