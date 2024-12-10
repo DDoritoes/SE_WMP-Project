@@ -17,6 +17,13 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   String _errorMessage = '';
 
+  @override
+  void initState() {
+    super.initState();
+    _loadUserCred();
+  }
+
+
   // Function to log in the user
   Future<void> _loginUser() async {
     setState(() {
@@ -47,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _loadUserCred() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _emailController.text = prefs.getString('username') ?? '';
+      _emailController.text = prefs.getString('email') ?? '';
       _passwordController.text = prefs.getString('pass') ?? '';
     });
   }

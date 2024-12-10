@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'geminiapi.dart';
 
@@ -80,7 +79,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Chat Interface")),
+      appBar: AppBar(title: const Text("AI Chat")),
       body: Column(
         children: [
           // TextField at the top
