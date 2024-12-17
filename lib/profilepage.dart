@@ -14,6 +14,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _usernameController = TextEditingController();
   File? _profileImage;
   String? _username;
+  int _currentIndex =2;
 
   @override
   void initState() {
@@ -93,7 +94,6 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Profile Picture
             GestureDetector(
               onTap: _pickImage,
               child: CircleAvatar(
@@ -108,7 +108,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             SizedBox(height: 20),
             
-            // Username input field
             TextField(
               controller: _usernameController,
               decoration: InputDecoration(
@@ -117,8 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             SizedBox(height: 20),
-            
-            // Save button
+
             ElevatedButton(
               onPressed: () {
                 _saveUserData();
@@ -132,35 +130,37 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
 
-      // Move BottomNavigationBar here to ensure it is at the bottom
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 2, // Index 2 because it's the Profile page
+        currentIndex: _currentIndex,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.pets),
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
+            icon: Icon(Icons.chat_bubble_outline),
             label: "Chat",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.account_circle_outlined),
             label: "Profile",
           ),
         ],
         onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+
           switch (index) {
             case 0:
-              // Navigate to the Home page
               Navigator.pushNamed(context, '/home');
               break;
             case 1:
-              // Navigate to the Chat page
               Navigator.pushNamed(context, '/chat');
               break;
             case 2:
-              // Stay on the profile page
               break;
           }
         },

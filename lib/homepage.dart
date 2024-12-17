@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  // Sample data for the stores (you can replace it with real data or API)
-  final List<Map<String, String>> stores = [
-    {'name': 'Store 1', 'image': 'assets/img/image1.jpg'},
-    {'name': 'Store 2', 'image': 'assets/img/image2.jpg'},
-    {'name': 'Store 3', 'image': 'assets/img/image3.jpg'},
-    {'name': 'Store 4', 'image': 'assets/img/image4.jpg'},
-    {'name': 'Store 5', 'image': 'assets/img/image1.jpg'},
+  final List<Map<String, String>> petInfo = [
+    {'title': 'Pet Health Tips', 'description': 'How to keep your pet healthy'},
+    {'title': 'Grooming Tips', 'description': 'Top 5 tips for grooming pets'},
+    {'title': 'Nutrition Guide', 'description': 'What to feed your pet'},
+    {'title': 'Training Tips', 'description': 'How to train your pet effectively'},
   ];
 
   HomePage({super.key});
@@ -15,168 +13,198 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home Page"),
-      ),
-      body: Column(
-        children: [
-          // Catalogue Section with Horizontal Scroll
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Featured',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-          ),
-          // Horizontal Scrollable ListView for stores
-          // ignore: sized_box_for_whitespace
-          Container(
-            height: 200, // Set a fixed height for the horizontal scrollable area
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: stores.length,
-              itemBuilder: (context, index) {
-                final store = stores[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      // Handle store tap, e.g., navigate to store details page
-                      // ignore: avoid_print
-                      print('Tapped on ${store['name']}');
-                    },
-                    child: Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Container(
-                        width: 150, // Width for each store item
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header Section (Tetap statis)
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              color: Colors.grey[900],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "pawsistant",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                      ),
+                      PopupMenuButton<String>(
+                        icon: const Icon(Icons.more_vert, color: Colors.white),
+                        onSelected: (value) {
+                          switch (value) {
+                            case 'Settings':
+                              Navigator.pushNamed(context, '/set');
+                              break;
+                            case 'Profile':
+                              Navigator.pushNamed(context, '/profile');
+                              break;
+                            case 'Logout':
+                              Navigator.pushReplacementNamed(context, '/login');
+                              break;
+                          }
+                        },
+                        itemBuilder: (BuildContext context) {
+                          return [
+                            const PopupMenuItem(
+                              value: 'Settings',
+                              child: Text('Settings'),
+                            ),
+                            const PopupMenuItem(
+                              value: 'Profile',
+                              child: Text('Profile'),
+                            ),
+                            const PopupMenuItem(
+                              value: 'Logout',
+                              child: Text('Logout'),
+                            ),
+                          ];
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    "\nNeed help? \nTry chatting with our chatbot, Petties!",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[800],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'ask here...',
+                        hintStyle: TextStyle(color: Colors.white70),
+                        prefixIcon: Icon(Icons.search, color: Colors.white),
+                        contentPadding: EdgeInsets.symmetric(vertical: 14),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Scrollable Paw Menu and Paw Bulletin
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Paw Menu
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        'Paw Menu',
+                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
                           children: [
-                            // Replace with an actual image asset or network image
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Image.asset(
-                                store['image']!,
-                                fit: BoxFit.cover,
-                                height: 120,
-                                width: 150,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              store['name']!,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
+                            SizedBox(width: 12),
+                            _menuItem('Booking', Icons.calendar_today, Colors.blue, () {
+                              Navigator.pushNamed(context, '/book');
+                            }),
+                            SizedBox(width: 12),
+                            const SizedBox(width: 14),
+                            _menuItem('AI Chatbot', Icons.assistant_outlined, Colors.green, () {
+                              Navigator.pushNamed(context, '/chat');
+                            }),
+                            SizedBox(width: 12),
+                            const SizedBox(width: 14),
+                            _menuItem('Shop', Icons.shopping_cart, Colors.orange, () {
+                              Navigator.pushNamed(context, '/shop');
+                            }),
+                            SizedBox(width: 12),
+                            const SizedBox(width: 14),
+                            _menuItem('Activity', Icons.assignment_rounded, Colors.red, () {
+                              Navigator.pushNamed(context, '/act');
+                            }),
+                            SizedBox(width: 12),
+                            const SizedBox(width: 14),
+                            _menuItem('Others', Icons.grid_view_rounded, const Color.fromARGB(255, 94, 92, 89), () {
+                              Navigator.pushNamed(context, '/oth');
+                            }),
+                            SizedBox(width: 12),
                           ],
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-          ),
-          // Catalogue Section with Horizontal Scroll
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Reccomended',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-          ),
-          // Horizontal Scrollable ListView for stores
-          // ignore: sized_box_for_whitespace
-          Container(
-            height: 200, // Set a fixed height for the horizontal scrollable area
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: stores.length,
-              itemBuilder: (context, index) {
-                final store = stores[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      // Handle store tap, e.g., navigate to store details page
-                      // ignore: avoid_print
-                      print('Tapped on ${store['name']}');
-                    },
-                    child: Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Container(
-                        width: 150, // Width for each store item
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // Replace with an actual image asset or network image
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Image.asset(
-                                store['image']!,
-                                fit: BoxFit.cover,
-                                height: 120,
-                                width: 150,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              store['name']!,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
+                    const SizedBox(height: 16),
+                    // Paw Bulletin
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        'Paw Bulletin',
+                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       ),
                     ),
-                  ),
-                );
-              },
+                    const SizedBox(height: 10),
+                    Column(
+                      children: petInfo.map((info) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            elevation: 4,
+                            child: ListTile(
+                              title: Text(
+                                info['title']!,
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(info['description']!),
+                              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.pets),
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
+            icon: Icon(Icons.chat_bubble_outline),
             label: "Chat",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.account_circle_outlined),
             label: "Profile",
           ),
         ],
         onTap: (index) {
           switch (index) {
-            case 0:
-              // Home - do nothing as we are already on the home page
-              break;
             case 1:
-              // Navigate to the ChatPage when the Chat button is tapped
               Navigator.pushNamed(context, '/chat');
               break;
             case 2:
@@ -184,6 +212,24 @@ class HomePage extends StatelessWidget {
               break;
           }
         },
+      ),
+    );
+  }
+
+  Widget _menuItem(String title, IconData icon, Color color, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: color.withOpacity(0.2),
+            child: Icon(icon, color: color, size: 30),
+          ),
+          const SizedBox(height: 8),
+          Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        ],
       ),
     );
   }

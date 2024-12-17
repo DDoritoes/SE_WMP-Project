@@ -14,6 +14,7 @@ class _ChatPageState extends State<ChatPage> {
   final GeminiAPI pythonApi = GeminiAPI();
   List<Map<String, String>> messages = [];
   bool isDropdownVisible = false;
+  int _currentIndex =1;
 
   // This function simulates a response after the user inputs a message
   void _sendMessage() {
@@ -82,33 +83,12 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(title: const Text("AI Chat")),
       body: Column(
         children: [
-          // TextField at the top
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _controller,
-              onChanged: (text) {
-                setState(() {
-                  isDropdownVisible = text.isNotEmpty;
-                });
-              },
-              decoration: InputDecoration(
-                labelText: "Type a message...",
-                border: OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: _sendMessage,
-                ),
-              ),
-            ),
-          ),
-          
-          // Chat bubbles displaying messages
           Expanded(
             child: ListView.builder(
+              reverse: true,
               itemCount: messages.length,
               itemBuilder: (context, index) {
-                final message = messages[index];
+                final message = messages[messages.length - 1 - index];
                 bool isUserMessage = message['type'] == 'user';
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
@@ -132,40 +112,61 @@ class _ChatPageState extends State<ChatPage> {
               },
             ),
           ),
-          
-          // Bottom Navigation Bar
-          BottomNavigationBar(
-            currentIndex: 1,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: "Home",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.chat),
-                label: "Chat",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: "Profile",
-              ),
-            ],
-            onTap: (index) {
-              switch (index) {
-                case 0:
-                  // Navigate to the ChatPage when the Chat button is tapped
-                  Navigator.pushNamed(context, '/home');
-                  break;
-                case 1:
-                  //Already on page
-                  break;
-                case 2:
-                  Navigator.pushNamed(context, '/profile');
-                  break;
-              }
-            },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      labelText: "Type a message...",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: _sendMessage,
+                ),
+              ],
+            ),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.pets),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble_outline),
+            label: "Chat",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_outlined),
+            label: "Profile",
+          ),
+        ],
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          switch (index) {
+            case 0:
+              Navigator.pushNamed(context, '/home');
+              break;
+            case 1:
+              break;
+            case 2:
+              Navigator.pushNamed(context, '/profile');
+              break;
+          }
+        },
       ),
     );
   }

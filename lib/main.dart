@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pet_care/activitypage.dart';
+import 'package:pet_care/bookingpage.dart';
+import 'package:pet_care/other.dart';
+import 'package:pet_care/settingpage.dart';
+import 'package:pet_care/shoppingpage.dart';
 import 'loginpage.dart';
 import 'homepage.dart';
 import 'chatpage.dart';
@@ -44,6 +49,12 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomePage(),
         '/chat': (context) => const ChatPage(),
         '/profile' : (context) => ProfilePage(),
+        '/book' : (context) => BookingPage(),
+        '/shop' : (context) => ShoppingPage(),
+        '/set' : (context) => SettingPage(),
+        '/act' : (context) => ActivityPage(),
+        '/oth' : (context) => OtherPage(),
+        '/login' : (context) => LoginPage(), 
       },
     );
   }
@@ -69,36 +80,79 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _OpeningScreen extends State<MyHomePage> {
+bool _isClickable = false;
 
   @override
   void initState(){
     super.initState();
     startTime();
   }
-
-  startTime() async{
-    Duration duration = const Duration(seconds: 0);
-    return Timer(duration, route);
+  startTime() async {
+    Duration duration = const Duration(seconds: 5);
+    await Future.delayed(duration);
+    setState(() {
+      _isClickable = true;
+    });
   }
 
-  route(){
-    Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (context) => LoginPage()
-      )
-    ); 
+void route() {
+    Navigator.pushReplacement(context,PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => LoginPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0); 
+          const end = Offset.zero; 
+          const curve = Curves.easeInOut;
+
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+        },
+      ),
+    );
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/img/image.png"),
-            fit: BoxFit.cover
-          )
+      body: GestureDetector(
+        onTap: _isClickable ? route : null,
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/img/loadingpage.jpg"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Stack(
+            children: [
+              Center(
+                child: !_isClickable
+                    ? const CircularProgressIndicator()
+                    : null,
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: _isClickable
+                    ? Padding(
+                        padding: const EdgeInsets.only(bottom: 40),
+                        child: const Text(
+                          'Tap the Screen to Continue',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    : null,
+              ),
+            ],
+          ),
         ),
-        child: null,
       ),
     );
   }
