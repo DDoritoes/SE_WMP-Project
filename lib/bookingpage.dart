@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pet_care/activitypage.dart';
+import 'package:pet_care/homepage.dart';
 // Import the ActivityPage
 
 class BookingPage extends StatefulWidget {
@@ -244,7 +245,7 @@ class _BookingPageState extends State<BookingPage> {
     'cageType': selectedCageType,
     'duration': duration,
     'totalPrice': totalPrice,
-    'status': 'Dalam pengantaran',
+    'status': 'In Progress',
     'endDate': selectedDate!.add(Duration(days: duration)), // Tanggal selesai
   };
 
@@ -283,8 +284,11 @@ void _showInvoice(Map<String, dynamic> bookingData, int pricePerDay, int totalPr
         actions: [
           TextButton(
             onPressed: () {
-              // Back to Home Page
-              Navigator.of(context).popUntil((route) => route.isFirst);
+              // Navigate to HomePage
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => HomePage()),
+                (route) => false, // Remove all previous routes
+              );
             },
             child: const Text('Back to Home Page'),
           ),
